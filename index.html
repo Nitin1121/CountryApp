@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+nav {background-color: #000000;padding: 4px;color: white;} *{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif}.topnav{overflow:hidden;background-color:#eee}.topnav a{float:left;display:block;color:#000;text-align:center;padding:14px 16px;text-decoration:none;font-size:17px}.topnav .search{float:right}.topnav input[type=text]{padding:6px;margin-top:8px;font-size:17px;border:none}.topnav .search button{float:right;padding:6px 10px;margin-top:8px;margin-right:16px;background:#ddd;font-size:17px;border:none;cursor:pointer}.topnav .search button:hover{background:#ccc}.row::after{content:"";clear:both;display:table}[class*=col-]{float:left;padding:10px}html{font-family:sans-serif}.main{background-color:#eee;color:#fff;padding:50px}.menu ul{list-style-type:none;margin:0;padding:0}.menu li{padding:8px;margin-bottom:7px;background-color:#33b5e5;color:#fff;box-shadow:0 1px 3px rgba(0,0,0,.12),0 1px 2px rgba(0,0,0,.24)}.menu li:hover{background-color:#09c}.wer{background-color:#33b5e5;padding:15px;color:#fff;text-align:center;font-size:14px;box-shadow:0 1px 3px rgba(0,0,0,.12),0 1px 2px rgba(0,0,0,.24)}.footer{background-color:#09c;color:#fff;text-align:center;font-size:12px;padding:15px}.col-1{width:8.33%}.col-2{width:16.66%}.col-3{width:25%}.col-4{width:33.33%}.col-5{width:41.66%}.col-6{width:50%}.col-7{width:58.33%}.col-8{width:66.66%}.col-9{width:75%}.col-10{width:83.33%}.col-11{width:91.66%}.col-12{width:100%}.icon{width:150px;height:auto}.center{display:block;margin-left:auto;margin-right:auto}.card{background-color:#fff;padding:15px;border-radius:18px}p.text{text-align:center;padding-bottom:0;margin-bottom:0}
+</style>
+</head>
+<body style="background-color: #eee;">
+  <nav><h1 style="text-align: center;">CountryApp</h1></nav>
+  
+  <div class="main">
+        <div class="search">
+                <input  type="text" id="c" placeholder="Search" class="col-8" >
+                <button type="button" class ="col-4" onclick="api()" > SEARCH</button>
+             
+            </div>
+ </div>
+<div  style="display:flex;flex-wrap: wrap;    justify-content: center;" id="detail">
+
+</div>
+</body>
+<script>
+    function getParams(name){
+        if(name=(new RegExp('[?&]'+encodeURIComponent(name)+'=([^&]*)')).exec(location.search))
+            return decodeURIComponent(name[1]);
+    }
+    if(getParams('search')){
+      var x = getParams('search');
+      document.getElementById("c").value = x;
+      api();
+    }
+    function api()
+    {
+        var country=document.getElementById("c").value;
+        //alert(country);
+        fetch('https://restcountries.eu/rest/v2/name/'+country)
+      .then(
+        function(response) {
+          if (response.status !== 200) {
+            console.log(              response.status);
+            return;
+          }
+
+          response.json().then(function(data) {
+            console.log(data);
+            var images = '';
+            for(d of data){
+              images += `<div class="center" ><div class="card"><a href=res.html?alpha=${d.alpha3Code}&back=${window.location}?search=${country}><img src="${d.flag}" class="center icon"/></a><h3 class="text">${d.name}</h3></div></div>`;
+            }
+            document.getElementById( 'detail' ).innerHTML = images;      
+            
+            
+          });
+        }
+      )
+      .catch(function(err) {
+        console.log( err);
+      });
+    }
+        
+    
+        
+        </script>
+</html>
